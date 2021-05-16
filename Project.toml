@@ -1,13 +1,7 @@
-name = "LogNumber"
+name = "LogNumbers"
 uuid = "b87994b1-9133-44fd-9c53-83cd5a8bb8b6"
 authors = ["St Z <abczst@outlook.com> and contributors"]
 version = "0.1.0"
 
 [compat]
-julia = "1"
-
-[extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[targets]
-test = ["Test"]
+julia = "1.6"
