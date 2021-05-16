@@ -14,11 +14,18 @@ to_number(x::LogNumber) = x.sign*exp(x.exponent)
 
 Base.sign(x::LogNumber) = x.sign
 
-Base.:(*)(x::LogNumber, y::LogNumber) = LogNumber(x.sign*y.sign, x.exponent+y.exponent)
+function mul_div(pm::Union{typeof(+), typeof(-)}, x::LogNumber{T1}, y::LogNumber{T2}) where {T1, T2}
+    if x.sign == 0 || y.sign == 0
+        return LogNumber(0, oneunit(promote_type(T1, T2)))
+    end
+    LogNumber(x.sign*y.sign, pm(x.exponent, y.exponent))
+end
+
+Base.:(*)(x::LogNumber, y::LogNumber) = mul_div(+, x, y)
 Base.:(*)(x::LogNumber, y) = x*LogNumber(y)
 Base.:(*)(x, y::LogNumber) = LogNumber(x)*y
 
-Base.:(/)(x::LogNumber, y::LogNumber) = LogNumber(x.sign*y.sign, x.exponent-y.exponent)
+Base.:(/)(x::LogNumber, y::LogNumber) = mul_div(-, x, y)
 Base.:(/)(x::LogNumber, y) = x/LogNumber(y)
 Base.:(/)(x, y::LogNumber) = LogNumber(x)/y
 
